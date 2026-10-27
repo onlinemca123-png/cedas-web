@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="author" content="Equipa CEDAS — Ciências de Informação Geográfica">
+    <meta name="description" content="CEDAS GeoViewer — Visualizador Geográfico de Sábié, Moamba. Equipa: Shirley Matola, Suzany Rodrigues, Dinis Machava, Jordao Machaieie, Assane Viador, Marília Machava, Lúcia Manhice, Celso Manjate, Luís Mendes, Albertina Chaúque.">
+    <meta name="keywords" content="CEDAS, SIG, Moamba, Moçambique, Leaflet, Ciências de Informação Geográfica">
+    <meta name="theme-color" content="#174a35">
+    <title>CEDAS GeoViewer | Sábié, Moamba</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <!-- SPLASH SCREEN -->
+    <div class="loader" id="loader">
+        <div class="logo"><i class="fa-solid fa-earth-africa"></i></div>
+        <h1>CEDAS <span>GeoViewer</span></h1>
+        <div class="progress"><i></i></div>
+        <p>A preparar o ambiente geográfico…</p>
+        <small>Equipa CEDAS · Ciências de Informação Geográfica · 2026</small>
+    </div>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <a class="brand" href="index.html">
+            <span class="brand-icon"><i class="fa-solid fa-earth-africa"></i></span>
+            <span>
+        <b>CEDAS <em>GeoViewer</em></b>
+        <small>Sábié · Moamba · Moçambique</small>
+      </span>
+        </a>
+        <div class="top-credit">
+            Equipa <b>CEDAS</b> · Ciências de Informação Geográfica
+        </div>
+        <div class="top-actions">
+            <button class="icon" id="searchOpen" title="Pesquisar" aria-label="Pesquisar"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="icon" id="themeToggle" title="Alternar tema" aria-label="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+            <button class="icon mobile" id="mobileMenu" aria-label="Abrir painel"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <a class="active" href="index.html"><i class="fa-solid fa-map"></i> Mapa</a>
+        <a href="pages/sobre.html"><i class="fa-solid fa-users"></i> Equipa</a>
+        <a href="pages/sobre.html#classes"><i class="fa-solid fa-tags"></i> Classes</a>
+        <a href="pages/sobre.html#documentacao"><i class="fa-solid fa-book-open"></i> Documentação</a>
+        <span class="spacer"></span>
+        <small><i class="status"></i> Visualizador geográfico</small>
+    </nav>
+
+    <!-- SHELL -->
+    <main class="shell">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="side-head">
+                <div>
+                    <small class="eyebrow">AMBIENTE DE TRABALHO</small>
+                    <h2>Painel SIG</h2>
+                </div>
+                <button class="icon pale" id="collapse" aria-label="Recolher painel"><i class="fa-solid fa-angles-left"></i></button>
+            </div>
+
+            <div class="side-scroll">
+
+                <!-- CAMADAS -->
+                <section>
+                    <button class="section-toggle" data-panel="layers" aria-expanded="true">
+            <span><i class="fa-solid fa-layer-group"></i> Camadas</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="layers">
+                        <label class="field-label">Mapa de fundo</label>
+                        <div class="basemaps">
+                            <button class="basemap selected" data-base="carto"><i class="fa-solid fa-map"></i>Ruas</button>
+                            <button class="basemap" data-base="sat"><i class="fa-solid fa-satellite"></i>Satélite</button>
+                            <button class="basemap" data-base="topo"><i class="fa-solid fa-mountain-sun"></i>Relevo</button>
+                        </div>
+
+                        <label class="field-label top-gap">Camadas temáticas</label>
+
+                        <div class="layer-row">
+                            <label><input type="checkbox" id="showPolygons" checked><span class="sw"></span><i class="legend poly"></i> Polígonos</label>
+                        </div>
+                        <input id="opacityPolygons" class="opacity" type="range" min="10" max="100" value="35" aria-label="Opacidade dos polígonos">
+
+                        <div class="layer-row">
+                            <label><input type="checkbox" id="showLines" checked><span class="sw"></span><i class="legend line"></i> Linhas</label>
+                        </div>
+                        <input id="opacityLines" class="opacity" type="range" min="10" max="100" value="90" aria-label="Opacidade das linhas">
+
+                        <div class="layer-row">
+                            <label><input type="checkbox" id="showPoints" checked><span class="sw"></span><i class="legend point"></i> Pontos</label>
+                        </div>
+                        <input id="opacityPoints" class="opacity" type="range" min="10" max="100" value="90" aria-label="Opacidade dos pontos">
+
+                        <label class="field-label top-gap">Filtrar por classe</label>
+                        <select id="classFilter" class="form-select">
+              <option value="all">Todas as classes</option>
+              <option value="ED">ED · Edifícios</option>
+              <option value="VA">VA · Vias de Acesso</option>
+              <option value="AR">AR · Arvoredo</option>
+              <option value="RA">RA · Reservatório de Água</option>
+              <option value="CA">CA · Campo Agrícola</option>
+              <option value="RE">RE · Relevo</option>
+              <option value="QE">QE · Quadro Eléctrico</option>
+              <option value="PE">PE · Postes Eléctricos</option>
+              <option value="EP">EP · Estação Pluviométrica</option>
+              <option value="PT">PT · Posto de Transformação</option>
+            </select>
+
+                        <p class="hint">Activa as camadas, ajusta a transparência e filtra por classe.</p>
+                    </div>
+                </section>
+
+                <!-- LEGENDA -->
+                <section>
+                    <button class="section-toggle" data-panel="legend" aria-expanded="true">
+            <span><i class="fa-solid fa-palette"></i> Legenda</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="legend">
+                        <div class="legend-row"><i class="legend poly"></i> Polígonos</div>
+                        <div class="legend-row"><i class="legend line"></i> Linhas</div>
+                        <label class="field-label top-gap">Classes de pontos</label>
+                        <div id="classLegend"></div>
+                    </div>
+                </section>
+
+                <!-- FERRAMENTAS -->
+                <section>
+                    <button class="section-toggle" data-panel="tools" aria-expanded="true">
+            <span><i class="fa-solid fa-compass-drafting"></i> Ferramentas</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="tools">
+                        <div class="tools">
+                            <button class="tool" id="locate"><i class="fa-solid fa-location-crosshairs"></i>Onde estou?</button>
+                            <button class="tool" id="extent"><i class="fa-solid fa-expand"></i>Extensão</button>
+                            <button class="tool" id="measureDistance"><i class="fa-solid fa-ruler"></i>Distância</button>
+                            <button class="tool" id="measureArea"><i class="fa-solid fa-draw-polygon"></i>Área</button>
+                            <button class="tool" id="openFilters"><i class="fa-solid fa-filter"></i>Filtrar</button>
+                            <button class="tool" id="openCharts"><i class="fa-solid fa-chart-pie"></i>Estatísticas</button>
+                            <button class="tool" id="classifyPoints"><i class="fa-solid fa-tags"></i>Classificar</button>
+                            <button class="tool" id="fullscreen"><i class="fa-solid fa-maximize"></i>Ecrã</button>
+                        </div>
+                        <div id="measureStatus" class="measure-status" hidden>
+                            <span id="measureText">Medição activa</span>
+                            <button id="finishMeasure">Terminar</button>
+                            <button id="cancelMeasure">Limpar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VECTORIZAÇÃO -->
+                <section>
+                    <button class="section-toggle" data-panel="vectorize" aria-expanded="false">
+            <span><i class="fa-solid fa-object-group"></i> Vectorização</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="vectorize" hidden>
+                        <p class="hint">Agrupa pontos próximos em polígonos (tipo QGIS).</p>
+
+                        <label class="field-label">Raio do buffer (metros)</label>
+                        <input id="bufferRadius" class="opacity" type="range" min="10" max="500" value="50">
+                        <div class="range-labels">
+                            <span>10 m</span><span id="bufferRadiusValue">50 m</span><span>500 m</span>
+                        </div>
+
+                        <div class="tools">
+                            <button class="tool" id="vectorizeBuffer"><i class="fa-solid fa-circle-dot"></i>Buffer</button>
+                            <button class="tool" id="vectorizeHull"><i class="fa-solid fa-draw-polygon"></i>Convex Hull</button>
+                        </div>
+
+                        <div id="vectorizeStatus" class="measure-status" hidden>
+                            <span id="vectorizeText">Seleciona pontos…</span>
+                            <button id="vectorizeFinish">Terminar</button>
+                            <button id="vectorizeClear">Limpar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ANÁLISE R -->
+                <section>
+                    <button class="section-toggle" data-panel="r" aria-expanded="false">
+            <span><i class="fa-solid fa-code"></i> Análise R</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="r" hidden>
+                        <p class="hint">Executa análises estatísticas em R directamente no navegador.</p>
+
+                        <button class="wide" id="rInit"><i class="fa-solid fa-play"></i> Inicializar R</button>
+                        <button class="wide" id="rExport"><i class="fa-solid fa-file-export"></i> Exportar dados para R</button>
+
+                        <label class="field-label top-gap">Análises rápidas</label>
+                        <div class="tools">
+                            <button class="tool" data-r-analysis="resumo"><i class="fa-solid fa-chart-simple"></i>Resumo</button>
+                            <button class="tool" data-r-analysis="contagemPorClasse"><i class="fa-solid fa-list-ol"></i>Contagem</button>
+                            <button class="tool" data-r-analysis="areaTotal"><i class="fa-solid fa-calculator"></i>Área Total</button>
+                            <button class="tool" data-r-analysis="kmeans"><i class="fa-solid fa-object-group"></i>K-Means</button>
+                        </div>
+
+                        <label class="field-label top-gap">Código R personalizado</label>
+                        <textarea id="rCode" class="form-input" rows="4" placeholder="# Exemplo&#10;summary(dados)"></textarea>
+                        <button class="wide" id="rRun"><i class="fa-solid fa-terminal"></i> Executar código</button>
+
+                        <label class="field-label top-gap">Saída</label>
+                        <pre id="rOutput">Aguardando inicialização…</pre>
+                    </div>
+                </section>
+
+                <!-- INFORMAÇÃO -->
+                <section>
+                    <button class="section-toggle" data-panel="info" aria-expanded="true">
+            <span><i class="fa-solid fa-chart-simple"></i> Informação</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="info">
+                        <div class="stats">
+                            <div><b id="pointCount">0</b><small>Pontos</small></div>
+                            <div><b id="lineCount">0</b><small>Linhas</small></div>
+                            <div><b id="polygonCount">0</b><small>Polígonos</small></div>
+                        </div>
+                        <p id="dataState" class="state">A carregar os dados…</p>
+                    </div>
+                </section>
+
+                <!-- EXPORTAR -->
+                <section>
+                    <button class="section-toggle" data-panel="export" aria-expanded="false">
+            <span><i class="fa-solid fa-file-export"></i> Exportar</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="export" hidden>
+                        <button class="wide" id="exportGeoJSON"><i class="fa-solid fa-file-arrow-down"></i> Exportar GeoJSON</button>
+                        <button class="wide" id="exportCSV"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+                        <button class="wide" id="exportImage"><i class="fa-regular fa-image"></i> Exportar imagem / PDF</button>
+                        <p class="hint">A captura de imagem depende das políticas CORS dos mapas de fundo.</p>
+                    </div>
+                </section>
+
+                <!-- SOBRE -->
+                <section>
+                    <button class="section-toggle" data-panel="about" aria-expanded="false">
+            <span><i class="fa-solid fa-circle-info"></i> Sobre o projecto</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+                    <div class="section-body" id="about" hidden>
+                        <b>CEDAS GeoViewer</b>
+                        <p class="hint">Visualizador interactivo de dados geográficos de Sábié, Moamba, Moçambique.</p>
+                        <p class="about-line">Ano <b>2026</b></p>
+                        <p class="about-line">Área <b>Ciências de Informação Geográfica</b></p>
+                        <p class="about-line">Referência de campo <b>D063396 · Trimble M1</b></p>
+
+                        <label class="field-label top-gap">Equipa do projecto</label>
+                        <ul class="team-list compact">
+                            <li><b>Shirley Lapson Matola</b><span>20233757</span></li>
+                            <li><b>Suzany Osvaldo Rodrigues</b><span>20231927</span></li>
+                            <li><b>Dinis Machava</b><span>20225518</span></li>
+                            <li><b>Jordao Machaieie Junior</b><span>20211636</span></li>
+                            <li><b>Assane Viador</b><span>20221013</span></li>
+                            <li><b>Marília Machava</b><span>20231477</span></li>
+                            <li><b>Lúcia Manhice</b><span>20211648</span></li>
+                            <li><b>Celso André Manjate</b><span>20211593</span></li>
+                            <li><b>Luís Mendes</b><span>20231450</span></li>
+                            <li><b>Albertina Luís Chaúque</b><span>20211578</span></li>
+                        </ul>
+                        <button class="wide" id="aboutPage"><i class="fa-solid fa-arrow-right"></i> Ver página completa</button>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="side-foot">
+                <i class="fa-solid fa-users"></i>
+                <span>Equipa CEDAS<small>Ciências de Informação Geográfica · 2026</small></span>
+            </div>
+        </aside>
+
+        <!-- WORKSPACE -->
+        <section class="workspace" id="workspace">
+            <div class="map-head">
+                <div>
+                    <small class="eyebrow">VISUALIZAÇÃO CARTOGRÁFICA</small>
+                    <h2>CEDAS <span>/</span> Sábié, Moamba</h2>
+                </div>
+                <div class="map-actions">
+                    <button class="map-btn" id="searchQuick"><i class="fa-solid fa-magnifying-glass"></i><span>Pesquisar</span></button>
+                    <button class="map-btn" id="presentation"><i class="fa-solid fa-tv"></i><span>Apresentar</span></button>
+                    <button class="map-btn" id="reset"><i class="fa-solid fa-house"></i><span>Vista inicial</span></button>
+                </div>
+            </div>
+
+            <div class="map-wrap">
+                <div id="map" aria-label="Mapa interactivo do CEDAS"></div>
+                <div class="map-badge"><i class="status"></i><span id="mapStatus">A preparar o mapa</span></div>
+                <div class="map-note">Cartografia sujeita aos termos dos fornecedores.</div>
+            </div>
+
+            <footer class="map-foot">
+                <span><i class="fa-solid fa-crosshairs"></i> <b id="coords">Lat: — | Lon: —</b></span>
+                <span class="crs">WGS 84 / EPSG:4326 · Escala gráfica no mapa</span>
+                <span class="developer">Equipa CEDAS · Ciências de Informação Geográfica</span>
+            </footer>
+        </section>
+    </main>
+
+    <!-- PAINEL DE DETALHES -->
+    <aside class="details-panel" id="detailsPanel" aria-hidden="true">
+        <header class="details-head">
+            <div id="detailsTitle"></div>
+            <button class="icon pale" id="detailsClose" aria-label="Fechar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+        </header>
+        <div class="details-body">
+            <div id="detailsContent"></div>
+            <div id="detailsActions"></div>
+        </div>
+        <footer class="details-foot">
+            <small>Equipa CEDAS · Ciências de Informação Geográfica</small>
+        </footer>
+    </aside>
+
+    <!-- MODAL -->
+    <div class="backdrop" id="backdrop" hidden>
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <header>
+                <div>
+                    <small class="eyebrow">CEDAS GEOVIEWER</small>
+                    <h2 id="modalTitle">Pesquisa</h2>
+                </div>
+                <button class="icon pale" id="modalClose" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+            </header>
+            <div id="modalContent" class="modal-content"></div>
+            <footer id="modalFooter"></footer>
+        </section>
+    </div>
+
+    <!-- TOASTS -->
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <!-- SCRIPTS EXTERNOS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <!-- SCRIPTS INTERNOS -->
+    <script src="js/theme.js"></script>
+    <script src="js/layers.js"></script>
+    <script src="js/classify.js"></script>
+    <script src="js/vectorize.js"></script>
+    <script src="js/r-integration.js"></script>
+    <script src="js/details.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/welcome.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

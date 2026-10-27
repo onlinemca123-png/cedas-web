@@ -1,0 +1,51 @@
+/* Equipa CEDAS | Ciências de Informação Geográfica · 2026 */
+@media (max-width: 1100px) {
+  .top-credit { display: none; }
+  .sidebar { width: 285px; flex-basis: 285px; }
+  .developer { display: none; }
+  .team-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .topbar { height: 60px; padding: 0 12px; gap: 8px; }
+  .brand { min-width: 0; }
+  .brand-icon { width: 35px; height: 35px; }
+  .brand b { font-size: 14px; }
+  .brand small { font-size: 9px; }
+  .top-actions { gap: 5px; }
+  .icon { width: 33px; height: 33px; }
+  .mobile { display: grid !important; }
+
+  .nav { height: 41px; padding: 0 6px; overflow-x: auto; }
+  .nav a { padding: 0 10px; white-space: nowrap; font-size: 10px; }
+  .nav small { display: none; }
+
+  .shell { height: calc(100dvh - 101px); position: relative; }
+  .sidebar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: min(315px, 88vw); flex-basis: auto;
+    box-shadow: 10px 0 30px #102f2320;
+  }
+  .sidebar.collapsed { width: min(315px, 88vw); transform: translateX(-105%); overflow: hidden; }
+
+  .map-head { min-height: 59px; padding: 9px 11px; }
+  .map-head h2 { font-size: 13px; }
+  .map-actions { gap: 5px; }
+  .map-btn { padding: 9px; font-size: 0; }
+  .map-btn i { font-size: 12px; }
+  .map-foot { min-height: 34px; padding: 0 8px; font-size: 8px; gap: 6px; }
+  .crs, .developer { display: none; }
+  .map-badge { left: 8px; top: 8px; padding: 7px 9px; font-size: 9px; }
+  .map-note { right: 4px; bottom: 4px; font-size: 7px; }
+
+  .details-panel { top: 101px; width: 100%; }
+  .modal > header, .modal-content { padding: 16px; }
+  .modal footer { padding: 0 16px 16px; }
+  .welcome-info { grid-template-columns: 1fr; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .wide-chart { grid-column: span 1; }
+}
+
+@media (min-width: 761px) {
+  .mobile { display: none !important; }
+}

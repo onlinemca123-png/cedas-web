@@ -1,0 +1,16 @@
+{
+  "name": "CEDAS GeoViewer",
+  "short_name": "CEDAS",
+  "description": "Visualizador Geográfico do CEDAS — Sábié, Moamba",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#102f23",
+  "theme_color": "#174a35",
+  "icons": [
+    {
+      "src": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/svgs/solid/earth-africa.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

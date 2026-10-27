@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Equipa CEDAS — Ciências de Informação Geográfica">
+  <title>Equipa | CEDAS GeoViewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root { --g950:#102f23; --g900:#174a35; --g700:#2d7a5f; --g100:#e8f3ed; --accent:#f4a261; --bg:#f3f6f4; --surface:#fff; --text:#1e2924; --muted:#718078; --line:#e1e9e3; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    .page { max-width: 1080px; margin: 0 auto; padding: 40px 20px; }
+    .back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: var(--g700); font-weight: 600; text-decoration: none; }
+    .hero { padding: 48px; border-radius: 24px; background: linear-gradient(135deg, #102f23 0%, #174a35 50%, #2d7a5f 100%); color: white; margin-bottom: 30px; position: relative; overflow: hidden; }
+    .hero::before { content: ""; position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, #f4a26140 0%, transparent 70%); }
+    .hero small { color: #b8d6c3; font-weight: 800; letter-spacing: 1.5px; font-size: 11px; }
+    .hero h1 { font-size: 42px; margin: 12px 0; letter-spacing: -1px; }
+    .hero p { font-size: 15px; line-height: 1.7; color: #d9e9df; max-width: 720px; margin: 0; }
+    .hero-stats { display: flex; gap: 30px; margin-top: 24px; flex-wrap: wrap; }
+    .hero-stat { display: flex; flex-direction: column; }
+    .hero-stat b { font-size: 28px; color: var(--accent); }
+    .hero-stat small { font-size: 10px; color: #b8d6c3; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-bottom: 30px; }
+    .card { padding: 24px; border-radius: 18px; background: white; border: 1px solid var(--line); transition: .3s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px #102f2315; }
+    .card h2 { font-size: 16px; margin: 0 0 10px; }
+    .card p { font-size: 13px; line-height: 1.7; color: var(--muted); margin: 0; }
+    .card-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; color: white; margin-bottom: 16px; }
+    .ci-1 { background: linear-gradient(135deg, #2d7a5f, #174a35); }
+    .ci-2 { background: linear-gradient(135deg, #f4a261, #e76f51); }
+    .ci-3 { background: linear-gradient(135deg, #2878d0, #1e5aa8); }
+    .ci-4 { background: linear-gradient(135deg, #8B4513, #A0522D); }
+
+    .section { background: white; border-radius: 20px; padding: 32px; margin-bottom: 24px; border: 1px solid var(--line); }
+    .section h2 { font-size: 22px; margin: 0 0 20px; color: var(--g950); display: flex; align-items: center; gap: 12px; }
+    .section h2 i { color: var(--g700); }
+
+    .class-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .class-item { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 12px; background: #f8faf9; border: 1px solid var(--line); transition: .2s; }
+    .class-item:hover { background: var(--g100); }
+    .class-sigla { font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; color: white; min-width: 48px; text-align: center; }
+    .class-nome { font-size: 12px; color: var(--text); font-weight: 500; }
+
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .team-member { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: linear-gradient(135deg, #f8faf9, #e8f3ed); border-radius: 12px; border: 1px solid var(--line); transition: .2s; }
+    .team-member:hover { transform: translateX(4px); border-color: var(--g700); }
+    .team-member b { font-size: 13px; color: var(--g950); }
+    .team-member span { font-family: monospace; font-size: 11px; color: var(--g700); padding: 4px 10px; background: white; border-radius: 6px; font-weight: 600; }
+
+    .footer { margin-top: 40px; padding: 24px; text-align: center; color: var(--muted); font-size: 12px; }
+    .footer b { color: var(--g900); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 32px 24px; }
+      .hero h1 { font-size: 28px; }
+      .section { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="../index.html"><i class="fa-solid fa-arrow-left"></i> Voltar ao mapa</a>
+
+    <div class="hero">
+      <small>CEDAS GEOVIEWER</small>
+      <h1>Equipa & Projecto</h1>
+      <p>
+        Visualizador SIG Web desenvolvido para apresentar e explorar dados geográficos
+        da área de estudo CEDAS, localizada em Sábié, distrito de Moamba, província de
+        Maputo, Moçambique. Levantamento realizado com equipamento <b>Trimble M1</b>
+        (Ref: D063396).
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>195</b><small>Pontos</small></div>
+        <div class="hero-stat"><b>10</b><small>Classes</small></div>
+        <div class="hero-stat"><b>10</b><small>Membros</small></div>
+        <div class="hero-stat"><b>2026</b><small>Ano</small></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon ci-1"><i class="fa-solid fa-map"></i></div>
+        <h2>Visualização</h2>
+        <p>Mapa interactivo com camadas de pontos, linhas e polígonos, basemaps alternativos e enquadramento automático.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ci-2"><i class="fa-solid fa-tags"></i></div>
+        <h2>10 Classes Temáticas</h2>
+        <p>Edifícios, vias, arvoredo, reservatórios, campos agrícolas, relevo e infraestruturas eléctricas.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ci-3"><i class="fa-solid fa-object-group"></i></div>
+        <h2>Vectorização</h2>
+        <p>Criação de polígonos a partir de pontos por buffer ou convex hull, com raio ajustável.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon ci-4"><i class="fa-solid fa-code"></i></div>
+        <h2>Análise em R</h2>
+        <p>Execução de código R directamente no navegador (WebR) para análises estatísticas avançadas.</p>
+      </div>
+    </div>
+
+    <div class="section" id="classes">
+      <h2><i class="fa-solid fa-list"></i> Classes definidas no campo</h2>
+      <div class="class-grid">
+        <div class="class-item"><span class="class-sigla" style="background:#8B4513">ED</span><span class="class-nome">Edifícios</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#555">VA</span><span class="class-nome">Vias de Acesso</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#2E8B57">AR</span><span class="class-nome">Arvoredo</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#1E90FF">RA</span><span class="class-nome">Reservatório de Água</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#9ACD32">CA</span><span class="class-nome">Campo Agrícola</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#A0522D">RE</span><span class="class-nome">Relevo</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#FFD700;color:#333">QE</span><span class="class-nome">Quadro Eléctrico</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#FF8C00">PE</span><span class="class-nome">Postes Eléctricos</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#00CED1">EP</span><span class="class-nome">Estação Pluviométrica</span></div>
+        <div class="class-item"><span class="class-sigla" style="background:#DC143C">PT</span><span class="class-nome">Posto de Transformação</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><i class="fa-solid fa-users"></i> Equipa do projecto</h2>
+      <div class="team-grid">
+        <div class="team-member"><b>Shirley Lapson Matola</b><span>20233757</span></div>
+        <div class="team-member"><b>Suzany Osvaldo Rodrigues</b><span>20231927</span></div>
+        <div class="team-member"><b>Dinis Machava</b><span>20225518</span></div>
+        <div class="team-member"><b>Jordao Machaieie Junior</b><span>20211636</span></div>
+        <div class="team-member"><b>Assane Viador</b><span>20221013</span></div>
+        <div class="team-member"><b>Marília Machava</b><span>20231477</span></div>
+        <div class="team-member"><b>Lúcia Manhice</b><span>20211648</span></div>
+        <div class="team-member"><b>Celso André Manjate</b><span>20211593</span></div>
+        <div class="team-member"><b>Luís Mendes</b><span>20231450</span></div>
+        <div class="team-member"><b>Albertina Luís Chaúque</b><span>20211578</span></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <b>CEDAS GeoViewer</b> · 2026 · Ciências de Informação Geográfica
+    </div>
+  </div>
+</body>
+</html>
